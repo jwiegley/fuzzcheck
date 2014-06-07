@@ -5,6 +5,10 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
+-- | Please see the README at:
+--
+--   https://github.com/jwiegley/fuzzcheck/blob/master/README.md
+
 module Test.FuzzCheck
        ( Fuzz(..)
        , FuzzException(..)
@@ -28,10 +32,10 @@ import Data.Functor.Identity
 import Data.Functor.Product
 import Data.List
 import Data.Typeable
-import Prelude hiding (catch, ioError)
-import System.Random
+import Prelude hiding (ioError)
 import Test.QuickCheck
 import Test.QuickCheck.Gen (Gen(..))
+import Test.QuickCheck.Random
 
 newtype Fuzz a = Fuzz (Compose Gen (Product (Const [String]) Identity) a)
                deriving Functor
@@ -77,7 +81,7 @@ infixr 1 ?>
 (?>) :: (MonadIO m, MonadBaseControl IO m)
      => String -> Fuzz (m a) -> m a
 lbl ?> Fuzz (Compose (MkGen g)) = do
-    rnd <- liftIO newStdGen
+    rnd <- liftIO newQCGen
     let Pair (Const args) (Identity x) = g rnd 100
     runFuzz args x
   where
