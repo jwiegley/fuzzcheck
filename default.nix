@@ -1,18 +1,18 @@
-{ cabal, bifunctors, mtl, profunctors, semigroupoids, semigroups
-, transformers, vector
+{ cabal, hspec, hspecExpectations, HUnit, liftedBase, monadControl
+, QuickCheck, random, transformers
 }:
 
 cabal.mkDerivation (self: {
-  pname = "these";
-  version = "0.4.1";
-  sha256 = "135qiyg87cf9rl10zb681mwnrwxdm37h76dnlia8amkkmpkg4wia";
+  pname = "fuzzcheck";
+  version = "0.1.1";
+  src = ./.;
   buildDepends = [
-    bifunctors mtl profunctors semigroupoids semigroups transformers
-    vector
+    liftedBase monadControl QuickCheck random transformers
   ];
+  testDepends = [ hspec hspecExpectations HUnit QuickCheck ];
   meta = {
-    homepage = "https://github.com/isomorphism/these";
-    description = "An either-or-both data type, with corresponding hybrid error/writer monad transformer";
+    homepage = "https://github.com/fpco/fuzzcheck";
+    description = "A simple checker for stress testing monadic code";
     license = self.stdenv.lib.licenses.bsd3;
     platforms = self.ghc.meta.platforms;
   };
