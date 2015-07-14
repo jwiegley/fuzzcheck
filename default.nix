@@ -1,19 +1,15 @@
-{ cabal, hspec, hspecExpectations, HUnit, liftedBase, monadControl
-, QuickCheck, random, transformers
+{ mkDerivation, base, hspec, hspec-expectations, HUnit, lifted-base
+, monad-control, QuickCheck, random, stdenv, transformers
 }:
-
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "fuzzcheck";
   version = "0.1.1";
   src = ./.;
   buildDepends = [
-    liftedBase monadControl QuickCheck random transformers
+    base lifted-base monad-control QuickCheck random transformers
   ];
-  testDepends = [ hspec hspecExpectations HUnit QuickCheck ];
-  meta = {
-    homepage = "https://github.com/fpco/fuzzcheck";
-    description = "A simple checker for stress testing monadic code";
-    license = self.stdenv.lib.licenses.bsd3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  testDepends = [ base hspec hspec-expectations HUnit QuickCheck ];
+  homepage = "https://github.com/fpco/fuzzcheck";
+  description = "A simple checker for stress testing monadic code";
+  license = stdenv.lib.licenses.bsd3;
+}
